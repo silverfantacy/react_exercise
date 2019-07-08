@@ -27,7 +27,30 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.board {
+  width: 300px;
+  height: 300px;
+  margin: 50px auto;
+  border: 5px solid #ffe1eb;
+  border-radius: 10px;
+  position: relative;
+}
+
+.board>.cell {
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  font-size: 50px;
+  text-align: center;
+  border: 1px solid #ffe1eb;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
 }
