@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom'
 // import HelloWorld from './HelloWorld'
 import Cell from './Cell';
 import Line from './Line';
+import Nav from './Nav';
+import { Home, Books, Electronics } from './Pages';
 import './App.scss';
 
 class App extends Component {
@@ -32,7 +35,14 @@ class App extends Component {
         endIndex={this.state.winner.endIndex} />);
       alert('你贏了')
     }
-    return <div className="board">{cells}</div>;
+    return <div><div className="container">
+      {/* The corresponding component will show here if the current URL matches the path */}
+      <Nav  />
+
+      <Route path="/" exact component={Home} />
+      <Route path="/books" component={Books} />
+      <Route path="/electronics" component={Electronics} />
+    </div><div className="board">{cells}</div></div>;
   }
   updateMark(index){
     console.log('啟動', index)
