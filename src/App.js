@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom'
-// import HelloWorld from './HelloWorld'
+import { renderRoutes, matchRoutes } from 'react-router-config';
+import { Link } from 'react-router-dom';
 import Cell from './Cell';
 import Line from './Line';
 import Nav from './Nav';
-import { Home, Books, Electronics } from './Pages';
 import routes from './routes';
 import './App.scss';
 
@@ -24,6 +23,7 @@ class App extends Component {
     }
   }
   render() {
+    const matchedRoutes = matchRoutes(routes, this.props.location.pathname);
     let cells = [];
     for (let i = 0; i < this.state.marks.length; i += 1 ) {
       cells.push(
@@ -36,25 +36,35 @@ class App extends Component {
         endIndex={this.state.winner.endIndex} />);
       alert('你贏了')
     }
-    return <div><div className="container">
+    console.log('測試',this.props)
+    return (<div><div className="container">
       {/* The corresponding component will show here if the current URL matches the path */}
       <Nav  />
+      <nav>
+        <ol className="breadcrumb">
+          {matchedRoutes.map((matchRoute, i) => {
+            const { path, breadcrumbName } = matchRoute.route;
 
+            // check whether the the path is the Page path user currently at
+            const isActive = path === this.props.location.pathname;
+
+            // if the Page path is user currently at, then do not show <Link />
+            return isActive ? (
+              <li key={i} className="breadcrumb-item active">
+                {breadcrumbName}
+              </li>
+            ) : (
+                <li key={i} className="breadcrumb-item">
+                  <Link to={path}>{breadcrumbName} </Link>
+                </li>
+              );
+          })}
+        </ol>
+      </nav>
+      
       {/* Refactor for using routes config */}
-      {routes.map((route, i) => {
-        const { path, exact, routes } = route;
-        return (
-          <Route
-            key={i}
-            path={path}
-            exact={exact}
-            render={(routeProps) => (
-              <route.component routes={routes} {...routeProps} />
-            )}
-          />
-        );
-      })}
-    </div><div className="board">{cells}</div></div>;
+      {renderRoutes(routes)}
+    </div><div className="board">{cells}</div></div>);
   }
   updateMark(index){
     console.log('啟動', index)
