@@ -5,6 +5,7 @@ import Cell from './Cell';
 import Line from './Line';
 import Nav from './Nav';
 import { Home, Books, Electronics } from './Pages';
+import routes from './routes';
 import './App.scss';
 
 class App extends Component {
@@ -39,9 +40,20 @@ class App extends Component {
       {/* The corresponding component will show here if the current URL matches the path */}
       <Nav  />
 
-      <Route path="/" exact component={Home} />
-      <Route path="/books" component={Books} />
-      <Route path="/electronics" component={Electronics} />
+      {/* Refactor for using routes config */}
+      {routes.map((route, i) => {
+        const { path, exact, routes } = route;
+        return (
+          <Route
+            key={i}
+            path={path}
+            exact={exact}
+            render={(routeProps) => (
+              <route.component routes={routes} {...routeProps} />
+            )}
+          />
+        );
+      })}
     </div><div className="board">{cells}</div></div>;
   }
   updateMark(index){
