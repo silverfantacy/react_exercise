@@ -23,7 +23,6 @@ class App extends Component {
     }
   }
   render() {
-    const matchedRoutes = matchRoutes(routes, this.props.location.pathname);
     let cells = [];
     for (let i = 0; i < this.state.marks.length; i += 1 ) {
       cells.push(
@@ -36,32 +35,9 @@ class App extends Component {
         endIndex={this.state.winner.endIndex} />);
       alert('你贏了')
     }
-    console.log('測試',this.props)
     return (<div><div className="container">
       {/* The corresponding component will show here if the current URL matches the path */}
       <Nav  />
-      <nav>
-        <ol className="breadcrumb">
-          {matchedRoutes.map((matchRoute, i) => {
-            const { path, breadcrumbName } = matchRoute.route;
-
-            // check whether the the path is the Page path user currently at
-            const isActive = path === this.props.location.pathname;
-
-            // if the Page path is user currently at, then do not show <Link />
-            return isActive ? (
-              <li key={i} className="breadcrumb-item active">
-                {breadcrumbName}
-              </li>
-            ) : (
-                <li key={i} className="breadcrumb-item">
-                  <Link to={path}>{breadcrumbName} </Link>
-                </li>
-              );
-          })}
-        </ol>
-      </nav>
-      
       {/* Refactor for using routes config */}
       {renderRoutes(routes)}
     </div><div className="board">{cells}</div></div>);
